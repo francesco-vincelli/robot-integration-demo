@@ -1,0 +1,26 @@
+services:
+
+  robot:
+    build:
+      context: .
+      dockerfile: docker/robot.Dockerfile
+
+    container_name: robot-demo
+
+    stdin_open: true
+    tty: true
+
+    environment:
+      - ROS_DOMAIN_ID=42
+
+    volumes:
+      - ./robot:/workspace/robot
+
+    networks:
+      - robot_net
+
+networks:
+
+  robot_net:
+    name: robot-security-net
+    driver: bridge
