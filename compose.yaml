@@ -12,9 +12,30 @@ services:
 
     environment:
       - ROS_DOMAIN_ID=42
+      - ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET
 
     volumes:
       - ./robot:/workspace/robot
+
+    networks:
+      - robot_net
+
+  attacker:
+    build:
+      context: .
+      dockerfile: docker/attacker.Dockerfile
+
+    container_name: attacker-demo
+
+    stdin_open: true
+    tty: true
+
+    environment:
+      - ROS_DOMAIN_ID=42
+      - ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET
+
+    volumes:
+      - ./attacker:/workspace/attacker
 
     networks:
       - robot_net
