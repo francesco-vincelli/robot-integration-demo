@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: docker/robot.Dockerfile
+      network: host
 
     container_name: robot-demo
 
@@ -13,9 +14,13 @@ services:
     environment:
       - ROS_DOMAIN_ID=42
       - ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET
+      - TURTLEBOT3_MODEL=burger
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
 
     volumes:
       - ./robot:/workspace/robot
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
 
     networks:
       - robot_net
@@ -24,6 +29,7 @@ services:
     build:
       context: .
       dockerfile: docker/attacker.Dockerfile
+      network: host
 
     container_name: attacker-demo
 
