@@ -1,0 +1,13 @@
+robot_patrol:
+  ros__parameters:
+    frame_id: map
+    # Initial design points. Validate and replace from RViz after Nav2 integration.
+    waypoints:
+      [-4.85, 3.20, 0.0,
+        3.20, 3.20, -1.57,
+        3.45, -3.15, 3.14,
+       -4.10, -3.10, 1.57]
+    pause_at_waypoint: 1.0
+    retry_delay: 2.0
+    max_retries: 3
+    loop_forever: true

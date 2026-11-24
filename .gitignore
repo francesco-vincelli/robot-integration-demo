@@ -7,18 +7,22 @@ __pycache__/
 build/
 install/
 log/
- 
-# Gazebo
+
+# Gazebo cache and runtime data
+robot/gazebo_cache/
 .gz/
  
 # IDE
 .vscode/
 .idea/
- 
-# OS
+
+# Editors and OS
+.vscode/
+.idea/
 .DS_Store
 *~
  
 # Runtime files
 *.log
 *.pid
+

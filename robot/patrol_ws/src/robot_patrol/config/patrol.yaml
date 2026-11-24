@@ -1,0 +1,20 @@
+robot_patrol:
+  ros__parameters:
+    frame_id: map
+
+    # Flat sequence of x, y, yaw triples:
+    # WP1: x, y, yaw
+    # WP2: x, y, yaw
+    # WP3: x, y, yaw
+    # WP4: x, y, yaw
+    waypoints: [
+      0.55,  0.65, 0.0,
+     -0.45,  1.99, 0.0,
+     -1.82, -0.72, 0.0,
+      0.60, -1.81, 0.0
+    ]
+
+    pause_at_waypoint: 1.0
+    retry_delay: 2.0
+    max_retries: 3
+    loop_forever: true

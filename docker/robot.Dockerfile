@@ -17,6 +17,11 @@ RUN apt-get update && \
         ros-jazzy-turtlebot3-msgs \
         ros-jazzy-turtlebot3-simulations \
         ros-jazzy-turtlebot3-teleop \
+        ros-jazzy-navigation2 \
+        ros-jazzy-nav2-bringup \
+        ros-jazzy-nav2-minimal-tb3-sim \
+        python3-colcon-common-extensions \
+        python3-rosdep \
         bash \
         git \
         nano \

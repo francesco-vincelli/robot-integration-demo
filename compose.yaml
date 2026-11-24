@@ -14,13 +14,19 @@ services:
     environment:
       - ROS_DOMAIN_ID=42
       - ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET
-      - TURTLEBOT3_MODEL=burger
+      - TURTLEBOT3_MODEL=waffle
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
+#      - LIBGL_ALWAYS_SOFTWARE=1
+#      - GALLIUM_DRIVER=llvmpipe
 
     volumes:
       - ./robot:/workspace/robot
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./robot/gazebo_cache:/root/.gz/fuel
+
+#    devices:
+#      - /dev/dri:/dev/dri
 
     networks:
       - robot_net

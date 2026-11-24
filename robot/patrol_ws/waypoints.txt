@@ -1,0 +1,18 @@
+Robot Patrol Waypoints
+======================
+
+Reference frame: map
+Orientation convention: yaw in radians
+Initial orientation: 0.0 rad for all waypoints
+Note: clicked-point z values are not used for planar Nav2 navigation.
+
+WP1: x=0.55, y=0.65, yaw=0.0
+WP2: x=-0.45, y=1.99, yaw=0.0
+WP3: x=-1.82, y=-0.72, yaw=0.0
+WP4: x=0.60, y=-1.81, yaw=0.0
+
+Patrol order:
+WP1 -> WP2 -> WP3 -> WP4 -> WP1
+
+ROS 2 parameter representation:
+waypoints: [0.55, 0.65, 0.0, -0.45, 1.99, 0.0, -1.82, -0.72, 0.0, 0.60, -1.81, 0.0]
