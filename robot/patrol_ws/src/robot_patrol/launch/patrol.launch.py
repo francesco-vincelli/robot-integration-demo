@@ -10,7 +10,7 @@ def generate_launch_description():
         get_package_share_directory('robot_patrol')
     )
 
-    parameters_file = package_share / 'config' / 'patrol.yaml'
+    parameters_file = package_share / 'config' / 'patrol_warehouse.yaml'
 
     return LaunchDescription([
         Node(

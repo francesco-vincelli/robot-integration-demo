@@ -331,6 +331,18 @@ class RobotPatrol(Node):
 
         return names.get(status, f'UNRECOGNISED({status})')
 
+    def cancel_active_goal(self):
+        if self.goal_handle is None:
+            return None
+
+        if not self.goal_handle.accepted:
+            return None
+
+        self.get_logger().info(
+            'Cancelling active navigation goal...'
+        )
+
+        return self.goal_handle.cancel_goal_async()
 
 def main(args=None):
     rclpy.init(args=args)
@@ -339,14 +351,36 @@ def main(args=None):
 
     try:
         rclpy.spin(node)
+
     except KeyboardInterrupt:
-        node.get_logger().info('Patrol interrupted by operator.')
+        if rclpy.ok():
+            node.get_logger().info(
+                'Patrol interrupted by operator.'
+            )
+
+            cancel_future = node.cancel_active_goal()
+
+            if cancel_future is not None:
+                rclpy.spin_until_future_complete(
+                    node,
+                    cancel_future,
+                    timeout_sec=3.0,
+                )
+
+                if cancel_future.done():
+                    node.get_logger().info(
+                        'Active navigation goal cancelled.'
+                    )
+                else:
+                    node.get_logger().warning(
+                        'Navigation goal cancellation timed out.'
+                    )
+
     finally:
         node.destroy_node()
 
         if rclpy.ok():
             rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()
