@@ -1,12 +1,30 @@
 robot_patrol:
   ros__parameters:
     frame_id: map
-    # Initial design points. Validate and replace from RViz after Nav2 integration.
-    waypoints:
-      [-4.35, 2.85,  0.0,  # -4.85, 3.20, 0.0,
-        3.20, 3.20, -1.57,
-        3.45, -3.15, 3.14,
-       -4.10, -3.10, 1.57]
+
+    # Validated clockwise warehouse loop.
+    # Each waypoint is stored as:
+    # [x, y, yaw]
+    #
+    # Route:
+    # Home -> West Centre -> South West -> South Centre
+    # -> South East -> East Centre -> North East
+    # -> North Centre -> Home
+    #
+    # Home is not repeated at the end because loop_forever causes
+    # the sequence to wrap from North Centre back to Home.
+
+    waypoints: [
+      -4.439,  2.815, -0.066,  # Home
+      -3.936, -1.022, -1.324,  # West Centre
+      -2.568, -3.223, -0.126,  # South West
+       0.039, -3.321, -0.048,  # South Centre
+       3.360, -2.455,  1.221,  # South East
+       3.913,  1.029,  1.822,  # East Centre
+       2.095,  3.177,  3.044,  # North East
+      -1.424,  3.349, -2.996   # North Centre
+    ]
+
     pause_at_waypoint: 1.0
     retry_delay: 2.0
     max_retries: 3

@@ -1,0 +1,50 @@
+frame_id: map
+
+# Successfully validated poses recorded from:
+# map -> base_footprint
+#
+# The route forms a clockwise loop around the warehouse:
+# Home -> west centre -> south west -> south centre
+# -> south east -> east centre -> north east
+# -> north centre -> Home
+
+waypoints:
+  home:
+    x: -4.439
+    y: 2.815
+    yaw: -0.066
+
+  west_centre:
+    x: -3.936
+    y: -1.022
+    yaw: -1.324
+
+  south_west:
+    x: -2.568
+    y: -3.223
+    yaw: -0.126
+
+  south_centre:
+    x: 0.039
+    y: -3.321
+    yaw: -0.048
+
+  south_east:
+    x: 3.360
+    y: -2.455
+    yaw: 1.221
+
+  east_centre:
+    x: 3.913
+    y: 1.029
+    yaw: 1.822
+
+  north_east:
+    x: 2.095
+    y: 3.177
+    yaw: 3.044
+
+  north_centre:
+    x: -1.424
+    y: 3.349
+    yaw: -2.996
