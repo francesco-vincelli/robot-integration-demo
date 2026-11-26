@@ -19,8 +19,17 @@ from launch_ros.actions import Node
 
 ROBOT_ROOT = Path('/workspace/robot')
 
-WORLD_FILE = ROBOT_ROOT / 'worlds' / 'warehouse_demo.sdf'
-GUI_CONFIG = ROBOT_ROOT / 'config' / 'warehouse_gui.config'
+WORLD_FILE = (
+    ROBOT_ROOT
+    / 'worlds'
+    / 'warehouse_demo.sdf'
+)
+
+GUI_CONFIG = (
+    ROBOT_ROOT
+    / 'config'
+    / 'warehouse_gui.config'
+)
 
 ROBOT_SDF = (
     ROBOT_ROOT
@@ -29,6 +38,7 @@ ROBOT_SDF = (
     / 'gz_waffle.sdf.xacro'
 )
 
+# Repository-owned URDF with corrected package mesh paths.
 ROBOT_URDF = (
     ROBOT_ROOT
     / 'models'
@@ -50,6 +60,7 @@ def generate_launch_description():
     x_pose = LaunchConfiguration('x_pose')
     y_pose = LaunchConfiguration('y_pose')
     z_pose = LaunchConfiguration('z_pose')
+
     roll = LaunchConfiguration('roll')
     pitch = LaunchConfiguration('pitch')
     yaw = LaunchConfiguration('yaw')
@@ -58,8 +69,8 @@ def generate_launch_description():
         get_package_share_directory('nav2_minimal_tb3_sim')
     )
 
-    # Gazebo needs the package model directories because the Waffle
-    # SDF refers to package-provided meshes and resources.
+    # Gazebo needs the installed package resources because the Waffle
+    # SDF refers to package-provided meshes and models.
     resource_paths = [
         str(minimal_tb3_share / 'models'),
         str(minimal_tb3_share.parent),
@@ -82,13 +93,13 @@ def generate_launch_description():
     # Home zone, facing approximately east into the warehouse.
     declare_x_pose = DeclareLaunchArgument(
         'x_pose',
-        default_value='-4.75',
+        default_value='-4.35', #'-4.75',
         description='Initial robot X position in metres',
     )
 
     declare_y_pose = DeclareLaunchArgument(
         'y_pose',
-        default_value='3.20',
+        default_value='2.85', # '3.20',
         description='Initial robot Y position in metres',
     )
 
@@ -101,11 +112,13 @@ def generate_launch_description():
     declare_roll = DeclareLaunchArgument(
         'roll',
         default_value='0.0',
+        description='Initial robot roll in radians',
     )
 
     declare_pitch = DeclareLaunchArgument(
         'pitch',
         default_value='0.0',
+        description='Initial robot pitch in radians',
     )
 
     declare_yaw = DeclareLaunchArgument(
@@ -128,7 +141,7 @@ def generate_launch_description():
         output='screen',
     )
 
-    robot_description = Command([
+    gazebo_robot_description = Command([
         FindExecutable(name='xacro'),
         ' ',
         str(ROBOT_SDF),
@@ -146,7 +159,7 @@ def generate_launch_description():
             '-name',
             robot_name,
             '-string',
-            robot_description,
+            gazebo_robot_description,
             '-x',
             x_pose,
             '-y',
@@ -174,6 +187,7 @@ def generate_launch_description():
         }],
     )
 
+    # RViz and robot_state_publisher use the corrected repository URDF.
     urdf_text = ROBOT_URDF.read_text(encoding='utf-8')
 
     robot_state_publisher = Node(

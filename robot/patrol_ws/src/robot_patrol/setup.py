@@ -39,6 +39,7 @@ setup(
     entry_points={
         'console_scripts': [
             'patrol_node = robot_patrol.patrol_node:main',
+            'particle_cloud_converter = robot_patrol.particle_cloud_converter:main',
         ],
     },
 )

@@ -1,12 +1,12 @@
 # Python
-__pycache__/
+**/__pycache__/
 *.py[cod]
 *.egg-info/
  
 # ROS 2 / colcon
-build/
-install/
-log/
+**/build/
+**/install/
+**/log/
 
 # Gazebo cache and runtime data
 robot/gazebo_cache/
@@ -25,4 +25,6 @@ robot/gazebo_cache/
 # Runtime files
 *.log
 *.pid
+core
+core.*
 

@@ -3,7 +3,7 @@ robot_patrol:
     frame_id: map
     # Initial design points. Validate and replace from RViz after Nav2 integration.
     waypoints:
-      [-4.85, 3.20, 0.0,
+      [-4.35, 2.85,  0.0,  # -4.85, 3.20, 0.0,
         3.20, 3.20, -1.57,
         3.45, -3.15, 3.14,
        -4.10, -3.10, 1.57]
