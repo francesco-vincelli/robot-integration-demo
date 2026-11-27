@@ -31,14 +31,14 @@ is_number()
 
 cd "${REPO_ROOT}"
 
+# Validate command-line arguments.
 is_number "${DURATION}" ||
-    fail \
-        "Duration must be numeric; received '${DURATION}'."
+    fail "Duration must be numeric; received '${DURATION}'."
 
 is_number "${PERIOD}" ||
-    fail \
-        "Period must be numeric; received '${PERIOD}'."
+    fail "Period must be numeric; received '${PERIOD}'."
 
+# Apply bounded parameters for the controlled demonstration.
 python3 - \
     "${DURATION}" \
     "${PERIOD}" <<'PY'
@@ -60,29 +60,51 @@ if not 0.2 <= period <= duration:
     )
 PY
 
+# Verify required project files.
 [[ -x scripts/attack_preflight.sh ]] ||
-    fail \
-        "Missing executable preflight: scripts/attack_preflight.sh"
+    fail "Missing executable preflight: scripts/attack_preflight.sh"
 
 [[ -f attacker/attack.py ]] ||
-    fail \
-        "Missing attacker implementation: attacker/attack.py"
+    fail "Missing attacker implementation: attacker/attack.py"
 
+# Check container, ROS 2 domain, cancellation service and telemetry.
 ./scripts/attack_preflight.sh
 
 printf '\n'
 printf 'Controlled demonstration parameters:\n'
-printf '  duration: %s seconds\n' "${DURATION}"
-printf '  period:   %s seconds\n' "${PERIOD}"
-printf '  target:   %s\n' \
-    '/navigate_to_pose/_action/cancel_goal'
+printf ' duration: %s seconds\n' "${DURATION}"
+printf ' period: %s seconds\n' "${PERIOD}"
+printf ' target: %s\n' '/navigate_to_pose/_action/cancel_goal'
 printf '\n'
 
-# This execution is intentionally interactive because attack.py --confirm
-# requires the operator to type ATTACK.
+# docker compose exec normally allocates a pseudo-TTY.
 #
-# Do not use a heredoc or -T for this command.
-docker compose exec \
+# For normal manual execution:
+#
+#   ./scripts/run_attack.sh
+#
+# stdin is a terminal, so we preserve the interactive TTY and the operator
+# can type ATTACK when requested by attack.py.
+#
+# For automated execution:
+#
+#   printf 'ATTACK\n' | ./scripts/run_attack.sh
+#
+# stdin is a pipe rather than a TTY. In that case Docker Compose must be
+# invoked with -T, otherwise it fails with:
+#
+#   the input device is not a TTY
+#
+# -T disables pseudo-TTY allocation but leaves stdin attached, allowing the
+# ATTACK confirmation to pass through to attack.py.
+
+DOCKER_EXEC_ARGS=(exec)
+
+if [[ ! -t 0 ]]; then
+    DOCKER_EXEC_ARGS+=(-T)
+fi
+
+docker compose "${DOCKER_EXEC_ARGS[@]}" \
     -e ATTACK_DURATION="${DURATION}" \
     -e ATTACK_PERIOD="${PERIOD}" \
     "${ATTACKER_SERVICE}" \

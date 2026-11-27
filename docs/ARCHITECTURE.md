@@ -1,5 +1,37 @@
 # Architecture
 
+## System architecture
+
+```mermaid
+flowchart LR
+    subgraph Host["Host · Docker Compose"]
+        subgraph Robot["Robot container · ROS 2 Jazzy · domain 42"]
+            Patrol["robot_patrol"]
+            NavAction["NavigateToPose action"]
+            Nav2["Nav2<br/>bt_navigator · planner · controller"]
+            Smoother["velocity_smoother"]
+            Monitor["collision_monitor"]
+            Bridge["ROS–Gazebo bridge"]
+            Sim["Gazebo Harmonic<br/>warehouse · TurtleBot3"]
+            Visual["RViz"]
+
+            Patrol --> NavAction --> Nav2
+            Nav2 -->|/cmd_vel_nav| Smoother
+            Smoother -->|/cmd_vel_smoothed| Monitor
+            Monitor -->|/cmd_vel| Bridge
+            Bridge <-->|robot and sensor topics| Sim
+            Nav2 --> Visual
+            Sim --> Visual
+        end
+
+        subgraph Attacker["Attacker container · ROS 2 · domain 42"]
+            Cancel["Bounded goal-cancellation client"]
+        end
+    end
+
+    Cancel -.->|/navigate_to_pose/_action/cancel_goal| NavAction
+```
+
 ## Containers
 
 ### Robot container

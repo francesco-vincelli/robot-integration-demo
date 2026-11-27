@@ -46,6 +46,71 @@ timeout 2 ros2 topic pub -r 20 /cmd_vel geometry_msgs/msg/Twist '{}'
 
 Confirm both containers use `ROS_DOMAIN_ID=42`, `ROS_AUTOMATIC_DISCOVERY_RANGE=SUBNET`, and `robot-security-net`.
 
-## GitHub push uses the wrong account
+## Python validation fails
 
-Use separate SSH aliases with `IdentitiesOnly yes`, then set the remote to the personal alias.
+Determine ownership and permissions for every parent directory:
+
+```bash
+namei -l \
+  robot/patrol_ws/src/robot_patrol/robot_patrol/__pycache__
+```
+
+If __pycache__ does not currently exist:
+
+```bash
+namei -l \
+  robot/patrol_ws/src/robot_patrol/robot_patrol
+```
+
+Then run:
+```bash
+ls -ld \
+  robot \
+  robot/patrol_ws \
+  robot/patrol_ws/src \
+  robot/patrol_ws/src/robot_patrol \
+  robot/patrol_ws/src/robot_patrol/robot_patrol \
+  robot/patrol_ws/src/robot_patrol/robot_patrol/__pycache__ \
+  2>/dev/null
+```
+
+Remove the cache as root:
+
+```bash
+sudo rm -rf \
+  robot/patrol_ws/src/robot_patrol/robot_patrol/__pycache__
+```
+
+Restore ownership on the exact source tree:
+
+```bash
+sudo chown -R \
+  "$(id -un):$(id -gn)" \
+  robot/patrol_ws/src/robot_patrol
+```
+
+Restore directory permissions:
+
+```bash
+find \
+  robot/patrol_ws/src/robot_patrol \
+  -type d \
+  -exec chmod u+rwx {} +
+```
+
+Restore file permissions:
+
+```bash
+find \
+  robot/patrol_ws/src/robot_patrol \
+  -type f \
+  -exec chmod u+rw {} +
+```
+
+Finally, run:
+
+```bash
+python3 -m py_compile \
+  robot/patrol_ws/src/robot_patrol/robot_patrol/patrol_node.py \
+  robot/patrol_ws/src/robot_patrol/robot_patrol/particle_cloud_converter.py
+```

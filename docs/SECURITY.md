@@ -51,7 +51,3 @@ Alert on:
 - new DDS participants;
 - goal preemption outside planned workflows;
 - velocity publishers outside the approved chain.
-
-## Responsible operation
-
-Keep the repository private until proprietary content, third-party assets and disclosure obligations have been reviewed. Run the attacker only in the isolated simulation environment.
