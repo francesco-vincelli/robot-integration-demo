@@ -133,4 +133,3 @@ See [docs/TESTING.md](docs/TESTING.md) for acceptance criteria and repeatability
 
 ## Licence
 
-No licence is granted unless a `LICENSE` file is added. Keep the repository private until ownership, third-party assets and disclosure constraints have been reviewed.
