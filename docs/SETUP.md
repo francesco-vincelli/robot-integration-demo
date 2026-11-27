@@ -3,7 +3,7 @@
 ## 1. Prepare the host
 
 ```bash
-cd ~/task/robot-integration-demo
+cd ~/robot-integration-demo
 xhost +SI:localuser:root
 docker compose build
 docker compose up -d robot attacker
