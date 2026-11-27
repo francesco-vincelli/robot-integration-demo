@@ -1,4 +1,4 @@
-# ROS 2 Warehouse Security Demo
+# Warehouse Security Demo
 
 A repeatable robotics-integration demonstration built with ROS 2 Jazzy, Gazebo Harmonic, Nav2 and Docker Compose. A simulated TurtleBot3 Waffle patrols a custom warehouse while a separate container demonstrates how an untrusted participant on the same unprotected DDS domain can interrupt the mission through the exposed `NavigateToPose` cancellation interface.
 
