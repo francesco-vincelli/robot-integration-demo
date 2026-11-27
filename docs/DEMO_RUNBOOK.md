@@ -69,7 +69,11 @@ ros2 run robot_patrol particle_cloud_converter
 
 ## 7. Verify lifecycle nodes
 
+Wait for 30 seconds before run the following commands:
+
 ```bash
+docker compose exec robot bash
+source /opt/ros/jazzy/setup.bash
 for node in map_server amcl controller_server planner_server smoother_server behavior_server bt_navigator waypoint_follower velocity_smoother collision_monitor; do
   printf '%-24s ' "$node"
   ros2 lifecycle get "/$node" 2>&1 | tail -n 1
